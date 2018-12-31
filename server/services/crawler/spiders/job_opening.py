@@ -3,8 +3,8 @@ import urllib
 import json
 
 
-class NursingJobsSpider(scrapy.Spider):
-    name = "nursing_jobs"
+class JobOpeningSpider(scrapy.Spider):
+    name = "job_openings"
 
     def start_requests(self):
         list = [{"parser": self.parse_kp, "url": self.get_kp_url()}]

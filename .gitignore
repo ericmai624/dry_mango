@@ -58,3 +58,7 @@ postgres
 # nodejs
 node_modules
 dist
+
+# config files
+**/config/config.dev.json
+**/config/config.prod.json

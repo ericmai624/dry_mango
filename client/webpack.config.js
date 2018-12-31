@@ -2,11 +2,19 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = () => {
+module.exports = (_, { mode }) => {
+  const isDev = mode !== 'production';
+  const jsOutputPrefix = 'static/js/';
+  const cssOutputPrefix = 'static/css/';
   const config = {
     entry: path.join(__dirname, 'src', 'index.react.tsx'),
     output: {
-      filename: 'static/js/[name].[hash].bundle.js',
+      filename:
+        jsOutputPrefix +
+        (isDev ? '[name].bundle.js' : '[name].[hash].bundle.js'),
+      chunkFilename:
+        jsOutputPrefix +
+        (isDev ? '[name].bundle.js' : '[name].[hash].bundle.js'),
       path: path.resolve(__dirname, 'dist'),
     },
     devtool: 'source-map',
@@ -15,7 +23,11 @@ module.exports = () => {
     },
     module: {
       rules: [
-        { test: /\.ts(x?)$/, use: ['babel-loader', 'ts-loader'] },
+        {
+          include: path.resolve(__dirname, 'src'),
+          test: /\.ts(x?)$/,
+          use: ['babel-loader', 'ts-loader'],
+        },
         {
           test: /\.css$/,
           use: [MiniCssExtractPlugin.loader, 'css-loader'],
@@ -29,8 +41,10 @@ module.exports = () => {
         template: './public/index.html',
       }),
       new MiniCssExtractPlugin({
-        filename: 'static/css/[name].[hash].css',
-        chunkFilename: 'static/css/[id].[hash].css',
+        filename:
+          cssOutputPrefix + (isDev ? '[name].css' : '[name].[hash].css'),
+        chunkFilename:
+          cssOutputPrefix + (isDev ? '[id].css' : '[id].[hash].css'),
       }),
     ],
   };

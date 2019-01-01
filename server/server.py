@@ -1,6 +1,6 @@
 from gevent.pywsgi import WSGIServer
 from utils import config
-from dry_mango import app, is_dev
+from app import app, is_dev
 
 server_config = config.read(is_dev())["server"]
 
